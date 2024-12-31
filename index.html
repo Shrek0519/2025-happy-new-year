@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025新年烟花</title>
+
+    <!-- 网页图标和分享信息 -->
+    <link rel="icon" href="https://i.ibb.co/HH399c9/20250101023913.png">
+    <meta property="og:title" content="2025新年烟花">
+    <meta property="og:description" content="新年烟花祝福">
+    <meta property="og:image" content="https://i.ibb.co/HH399c9/20250101023913.png">
+    <meta property="og:type" content="website">
+
+    <!-- 微信分享信息 -->
+    <meta itemprop="name" content="2025新年烟花">
+    <meta itemprop="description" content="新年烟花祝福">
+    <meta itemprop="image" content="https://i.ibb.co/HH399c9/20250101023913.png">
+
+    <!-- 额外的微信分享优化 -->
+    <meta name="description" content="2025新年烟花祝福">
+    <meta name="keywords" content="新年,烟花,2025,祝福">
+
+    <!-- 字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            background: #000;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .text-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            z-index: 1000;
+            filter: blur(0.6px);
+        }
+
+        .year {
+            color: rgba(255, 215, 0, 0.9);
+            font-size: 120px;
+            font-family: 'Dancing Script', cursive;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4),
+                         0 0 35px rgba(255, 215, 0, 0.3),
+                         0 0 50px rgba(255, 215, 0, 0.2);
+            animation: softGlow 3s ease-in-out infinite alternate;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .greeting {
+            color: rgba(255, 215, 0, 0.9);
+            font-size: 80px;
+            font-family: 'Dancing Script', cursive;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4),
+                         0 0 35px rgba(255, 215, 0, 0.3),
+                         0 0 50px rgba(255, 215, 0, 0.2);
+            animation: softGlow 3s ease-in-out infinite alternate;
+            line-height: 1.2;
+        }
+
+        @keyframes softGlow {
+            from {
+                opacity: 0.8;
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.3),
+                            0 0 35px rgba(255, 215, 0, 0.2),
+                            0 0 50px rgba(255, 215, 0, 0.1);
+            }
+            to {
+                opacity: 0.9;
+                text-shadow: 0 0 25px rgba(255, 215, 0, 0.4),
+                            0 0 40px rgba(255, 215, 0, 0.3),
+                            0 0 55px rgba(255, 215, 0, 0.2);
+            }
+        }
+
+        .signature {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(128, 128, 128, 0.7);
+            font-family: "Arial Black", "Microsoft YaHei", sans-serif;
+            font-size: 14px;
+            text-align: center;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        #shareCanvas {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 预览图生成用的隐藏画布 -->
+    <canvas id="shareCanvas"></canvas>
+    
+    <!-- 主画布 -->
+    <canvas id="canvas"></canvas>
+    
+    <!-- 文字内容 -->
+    <div class="text-container">
+        <div class="year">2025</div>
+        <div class="greeting">Happy New Year</div>
+    </div>
+    <div class="signature">Made by Shrek</div>
+
+    <script>
+        // 生成分享预览图
+        window.addEventListener('load', function() {
+            const shareCanvas = document.getElementById('shareCanvas');
+            const ctx = shareCanvas.getContext('2d');
+            
+            // 设置预览图尺寸
+            shareCanvas.width = 1200;
+            shareCanvas.height = 630;
+
+            // 绘制背景
+            ctx.fillStyle = '#B22222';
+            ctx.fillRect(0, 0, shareCanvas.width, shareCanvas.height);
+
+            // 加载并绘制图标
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.src = 'https://i.ibb.co/HH399c9/20250101023913.png';
+            
+            img.onload = function() {
+                // 绘制图标
+                const imgSize = 400;
+                const x = (shareCanvas.width - imgSize) / 2;
+                const y = (shareCanvas.height - imgSize) / 2;
+                ctx.drawImage(img, x, y, imgSize, imgSize);
+
+                // 添加文字
+                ctx.fillStyle = '#FFD700';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // 2025
+                ctx.font = 'bold 100px Arial';
+                ctx.fillText('2025', shareCanvas.width/2, 150);
+                
+                // Happy New Year
+                ctx.font = 'bold 80px Arial';
+                ctx.fillText('Happy New Year', shareCanvas.width/2, shareCanvas.height - 150);
+            };
+        });
+
+        // 原有的烟花动画代码
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // 设置画布尺寸
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // 颜色数组
+        const colors = [
+            '#FFD700', '#DAA520', '#FDB347', '#FFB90F',
+            '#FFFF00', '#FFE4B5', '#FFA500', '#FFD700',
+            '#FFA500', '#FF8C00', '#FF7F50', '#FF6347',
+            '#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#00ffff'
+        ];
+
+        // 粒子类
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.baseColor = color;
+                this.radius = Math.random() * 2 + 1;
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 6 + 2;
+                this.dx = Math.cos(angle) * velocity;
+                this.dy = Math.sin(angle) * velocity;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.015 + 0.015;
+                
+                this.brightness = Math.random() * 30 + 70;
+                this.maxBrightness = 100;
+                this.brightnessDelta = Math.random() * 2 - 1;
+            }
+
+            update() {
+                this.x += this.dx;
+                this.y += this.dy;
+                this.dy += 0.1;
+                this.alpha -= this.decay;
+
+                this.brightness += this.brightnessDelta;
+                if (this.brightness >= this.maxBrightness || this.brightness <= 70) {
+                    this.brightnessDelta *= -1;
+                }
+
+                return this.alpha > 0;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, this.radius
+                );
+
+                const color = hexToRgb(this.baseColor);
+                const brightnessAdjusted = `rgb(${Math.min(255, color.r * this.brightness / 100)}, 
+                                              ${Math.min(255, color.g * this.brightness / 100)}, 
+                                              ${Math.min(255, color.b * this.brightness / 100)})`;
+
+                gradient.addColorStop(0, '#fff');
+                gradient.addColorStop(0.4, brightnessAdjusted);
+                gradient.addColorStop(1, 'rgba(0,0,0,0)');
+
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // 烟花类
+        class Firework {
+            constructor(x, y, targetX, targetY, color) {
+                this.x = x;
+                this.y = y;
+                this.targetX = targetX;
+                this.targetY = targetY;
+                this.color = color;
+                this.distance = Math.sqrt(Math.pow(targetX - x, 2) + Math.pow(targetY - y, 2));
+                this.angle = Math.atan2(targetY - y, targetX - x);
+                this.velocity = 5;
+                this.particles = [];
+                this.exploded = false;
+            }
+
+            update() {
+                if (!this.exploded) {
+                    this.x += Math.cos(this.angle) * this.velocity;
+                    this.y += Math.sin(this.angle) * this.velocity;
+
+                    const distanceTraveled = Math.sqrt(
+                        Math.pow(this.x - (this.targetX - Math.cos(this.angle) * this.distance), 2) +
+                        Math.pow(this.y - (this.targetY - Math.sin(this.angle) * this.distance), 2)
+                    );
+
+                    if (distanceTraveled >= this.distance) {
+                        this.explode();
+                    }
+                }
+
+                this.particles = this.particles.filter(particle => particle.update());
+                return this.particles.length > 0 || !this.exploded;
+            }
+
+            draw() {
+                if (!this.exploded) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+
+                this.particles.forEach(particle => particle.draw());
+            }
+
+            explode() {
+                this.exploded = true;
+                const particleCount = Math.floor(Math.random() * 50) + 100;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    this.particles.push(new Particle(this.x, this.y, this.color));
+                }
+                
+                const sparkleCount = 20;
+                for (let i = 0; i < sparkleCount; i++) {
+                    const sparkle = new Particle(this.x, this.y, '#FFD700');
+                    sparkle.radius = Math.random() * 1 + 0.5;
+                    sparkle.decay = Math.random() * 0.02 + 0.02;
+                    this.particles.push(sparkle);
+                }
+            }
+        }
+
+        let fireworks = [];
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function autoLaunchFirework() {
+            const x = canvas.width * Math.random();
+            const y = canvas.height;
+            const targetX = canvas.width * Math.random();
+            const targetY = canvas.height * 0.2 + Math.random() * canvas.height * 0.5;
+            
+            let color;
+            if (Math.random() < 0.6) {
+                color = colors[Math.floor(Math.random() * 4)];
+            } else {
+                color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            fireworks.push(new Firework(x, y, targetX, targetY, color));
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            fireworks = fireworks.filter(firework => firework.update());
+            fireworks.forEach(firework => firework.draw());
+
+            if (Math.random() < 0.15) {
+                autoLaunchFirework();
+            }
+
+            if (fireworks.length < 8) {
+                autoLaunchFirework();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        function initialFireworks() {
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    autoLaunchFirework();
+                }, i * 300);
+            }
+        }
+
+        animate();
+        initialFireworks();
+    </script>
+</body>
+</html>
